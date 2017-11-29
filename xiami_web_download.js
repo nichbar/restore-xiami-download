@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         xiami_web_download
-// @namespace    https	://nich.work
-// @version      0.1
-// @description  For those who would like to download music from web rather than desktop client.
+// @name         恢复虾米网页下载
+// @namespace    https://nich.work
+// @version      0.3
+// @description  For those who would like to download music from web page rather than electron based desktop client.
 // @author       You
 // @match        http://www.xiami.com
 // @match        http://www.xiami.com/*
@@ -27,7 +27,6 @@
         }
     };
 
-
     unsafeWindow.selectDownlodQuality = function(data) {
         var ht, warm, lowht, highht;
         if (data.LOW == 'FREE') {
@@ -51,5 +50,27 @@
             '<a class="Closeit" onclick="closedialog();" title="" href="javascript:void(0);">关闭</a>';
 
         showDialog('', ht);
+    };
+
+    unsafeWindow.downloadalbum = function(id, type, me) {
+        if (!$.cookie('user')) {
+            showDialog('/member/poplogin');
+            return;
+        }
+        if (me) {
+            var downloadstatus = me.getAttribute('data-downloadstatus'); // 0 不提供服务, 1 免费, 2 付费
+
+            if (downloadstatus == '0') {
+                checkAlbumPermission('download');
+                return;
+            }
+
+            if (downloadstatus && downloadstatus == '2') {
+                buyMusic('album', id, '下载');
+                return;
+            }
+        }
+        prepareZipx('album', id);
+        return;
     };
 })();
