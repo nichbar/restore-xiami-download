@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name         恢复虾米网页下载
+// @name         虾米网页小补丁
 // @namespace    https://nich.work
-// @version      0.3
+// @version      0.4
 // @description  For those who would like to download music from web page rather than electron based desktop client.
 // @author       You
-// @match        http://www.xiami.com
-// @match        http://www.xiami.com/*
+// @match        *://www.xiami.com
+// @match        *://www.xiami.com/*
 // @grant        unsafeWindow
 // ==/UserScript==
 
@@ -26,6 +26,12 @@
             window.open(url);
         }
     };
+
+    // 播放专辑
+
+    unsafeWindow.playalbum = function playalbum(album_id, me) {
+        addSongs(escape('/song/playlist/id/' + album_id + '/type/1'));
+    }
 
     unsafeWindow.selectDownlodQuality = function(data) {
         var ht, warm, lowht, highht;
